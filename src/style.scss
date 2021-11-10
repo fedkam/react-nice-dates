@@ -24,7 +24,8 @@ $nice-dates-cell-width: calc(100% / 7);
       font-size: $nice-dates-font-size-big;
     }
 
-    &_previous, &_next {
+    &_previous,
+    &_next {
       cursor: pointer;
       height: 0;
       padding-bottom: $nice-dates-cell-width;
@@ -35,7 +36,7 @@ $nice-dates-cell-width: calc(100% / 7);
         border-right: 2px solid $nice-dates-color-gray;
         border-top: 2px solid $nice-dates-color-gray;
         box-sizing: border-box;
-        content: '';
+        content: "";
         display: block;
         height: 14px;
         left: 50%;
@@ -68,7 +69,7 @@ $nice-dates-cell-width: calc(100% / 7);
   }
 
   &-week-header {
-    box-shadow: 0 1px 0 rgba(#000, .06);
+    box-shadow: 0 1px 0 rgba(#000, 0.06);
     display: flex;
     padding: 8px 0;
 
@@ -95,7 +96,7 @@ $nice-dates-cell-width: calc(100% / 7);
       left: 0;
       position: absolute;
       right: 0;
-      transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-property: none;
       will-change: transform;
 
@@ -151,11 +152,12 @@ $nice-dates-cell-width: calc(100% / 7);
       z-index: 3;
     }
 
-    &:before, &:after {
+    &:before,
+    &:after {
       border-radius: 999px;
       bottom: 0;
       box-sizing: border-box;
-      content: '';
+      content: "";
       display: block;
       left: 0;
       opacity: 0;
@@ -171,7 +173,7 @@ $nice-dates-cell-width: calc(100% / 7);
 
     &:after {
       border: 2px solid $nice-dates-color-accent;
-      transform: scale(.95);
+      transform: scale(0.95);
       transition-duration: 150ms;
       transition-property: transform, opacity;
       z-index: 2;
@@ -205,7 +207,8 @@ $nice-dates-cell-width: calc(100% / 7);
         }
       }
 
-      &:not(:hover), &.-disabled {
+      &:not(:hover),
+      &.-disabled {
         * {
           color: #fff;
         }
@@ -251,7 +254,8 @@ $nice-dates-cell-width: calc(100% / 7);
     }
 
     &.-wide {
-      &:before, &:after {
+      &:before,
+      &:after {
         left: 12.5%;
         right: 12.5%;
       }
@@ -271,7 +275,7 @@ $nice-dates-cell-width: calc(100% / 7);
   &-popover {
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 1px 8px rgba(#000, .12);
+    box-shadow: 0 1px 8px rgba(#000, 0.12);
     margin: 8px 0;
     max-width: 600px;
     position: absolute;
@@ -279,7 +283,7 @@ $nice-dates-cell-width: calc(100% / 7);
     transform: perspective(1000px);
     transition-property: transform, opacity;
     transition-duration: 400ms;
-    transition-timing-function: cubic-bezier(.4, .2, 0, 1.1);
+    transition-timing-function: cubic-bezier(0.4, 0.2, 0, 1.1);
     width: 100%;
     will-change: transform, opacity;
     z-index: 9;
@@ -289,5 +293,113 @@ $nice-dates-cell-width: calc(100% / 7);
       pointer-events: none;
       transform: perspective(1000px) rotateX(-15deg);
     }
+  }
+}
+
+// custom
+$nice-dates-mount-cell-width: calc(100% / 4);
+
+.nice-dates {
+  &-navigation {
+    flex-direction: column;
+    justify-content: flex-start;
+    box-shadow: 0 1px 0 rgba(#000, 0.06);
+    height: 56px;
+    overflow: hidden;
+    transition: height 250ms ease-out;
+
+    &:hover {
+      height: 232px;
+      justify-content: flex-start;
+      transition: height 250ms ease-in 150ms;
+    }
+
+    &_current {
+      flex-grow: initial;
+      padding: 16px 0px;
+    }
+
+    &-submenu {
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      max-width: 280px;
+      font-size: $nice-dates-font-size-base;
+
+      &-months-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(47px, auto));
+        grid-auto-rows: minmax(47px, auto);
+        grid-gap: 4px;
+        text-transform: lowercase;
+        &-cell {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          position: relative;
+
+          & > * {
+            z-index: 2;
+          }
+
+          &:before,
+          &:after {
+            border-radius: 999px;
+            bottom: 0;
+            box-sizing: border-box;
+            content: "";
+            display: block;
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
+
+          &:before {
+            background-color: $nice-dates-color-accent;
+            z-index: 1;
+          }
+
+          &:after {
+            border: 2px solid $nice-dates-color-accent;
+            transform: scale(0.95);
+            transition-duration: 150ms;
+            transition-property: transform, opacity;
+            z-index: 2;
+          }
+
+          &:hover {
+            &:after {
+              opacity: 1;
+              transform: scale(1);
+            }
+          }
+
+          &.-selected {
+            cursor: auto;
+            color: #fff;
+
+            &:before {
+              opacity: 1;
+            }
+          }
+
+          @media (hover: none) {
+            &:after {
+              content: none;
+            }
+
+            &.-selected * {
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+  &-week-header {
+    box-shadow: none;
   }
 }
