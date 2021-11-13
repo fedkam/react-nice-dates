@@ -1,7 +1,6 @@
 import React from 'react'
 import { func, instanceOf, object } from 'prop-types'
 import {
-  // addMonths, startOfMonth, subMonths, isSameMonth,
   set, getMonth, format, isDate
 } from 'date-fns'
 import { Month } from './Month'

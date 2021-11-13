@@ -6,7 +6,7 @@ export const Month = (props) => {
   const { name, onMonthChange, isSelectedMonth } = props
   return (
     <div
-      className={classNames('nice-dates-navigation-submenu-months-grid-cell', { '-disabled -selected': isSelectedMonth })}
+      className={classNames('nice-dates-navigation-submenu-months-grid-month', { '-selected': isSelectedMonth })}
       onClick={onMonthChange}
     >
       <span>{name}</span>
