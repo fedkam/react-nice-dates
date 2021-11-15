@@ -309,6 +309,7 @@ $nice-dates-cell-width: calc(100% / 7);
     &_current {
       flex-grow: initial;
       padding: 16px 0px;
+      user-select: none;
     }
   }
   &-week-header {

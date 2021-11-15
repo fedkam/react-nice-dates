@@ -1,15 +1,22 @@
 import React from 'react'
 import { func, instanceOf, object } from 'prop-types'
-import { format } from 'date-fns'
+import { format, getYear } from 'date-fns'
 import { MonthGrid } from './MonthGrid'
 import { YearList } from './YearList'
+
+const getFormatPattern = (month) => {
+  const startYear = getYear(new Date(0))
+  const selectedYear = getYear(month)
+  if (selectedYear < startYear) return 'LLLL'
+  return 'LLLL yyyy'
+}
 
 const CalendarNavigation = ({ locale, month, minimumDate, maximumDate, onMonthChange }) => (
   <div className='nice-dates-navigation'>
     <span
       className='nice-dates-navigation_current'
     >
-      {format(month, 'LLLL yyyy', { locale })}
+      {format(month, getFormatPattern(month), { locale })}
     </span>
 
     <div className='nice-dates-navigation-submenu'>

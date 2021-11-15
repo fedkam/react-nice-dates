@@ -1,8 +1,7 @@
 import React from 'react'
 import VirtualScroller from './VirtualScroller'
 import {
-  getYear,
-  set
+  getYear, set
 } from 'date-fns'
 import { func, instanceOf } from 'prop-types'
 import { Year } from './Year'
@@ -15,10 +14,26 @@ export const YearList = (props) => {
     amount: 5,
     tolerance: 2,
     minIndex: getYear(new Date(0)),
-    maxIndex: getYear(month) + 1000,
-    startIndex: getYear(month) - 2
+    maxIndex: checkYear(month) + 1000,
+    startIndex: checkYear(month) - 2
   }
 
+  /** Проверка даты на < 1970г.
+   * @param {Date} selectedDate
+   * @returns {number} year
+   */
+  function checkYear(selectedDate) {
+    const startYear = getYear(new Date(0))
+    const selectedYear = getYear(selectedDate)
+    if (selectedYear < startYear) return startYear
+    return selectedYear
+  }
+
+  /** Генерация массива объектов { year, onYearChange }
+   * @param {number} offset
+   * @param {number} limit
+   * @returns {{year:number, onYearChange:()=>void}[]} массив объектов
+   */
   function getYearList(offset, limit) {
     const data = []
     const start = Math.max(SETTINGS.minIndex, offset)
@@ -54,7 +69,7 @@ export const YearList = (props) => {
       className="nice-dates-navigation-submenu-year-list"
       get={getYearList}
       settings={SETTINGS}
-      row={YearTemplate}
+      templateRow={YearTemplate}
     />
   )
 }

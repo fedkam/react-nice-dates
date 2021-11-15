@@ -26,24 +26,45 @@ const setInitialState = (settings) => {
   }
 }
 
+/** Пересчет data, topPaddingHeight, bottomPaddingHeight
+ * @param {{totalHeight:number, toleranceHeight:number, bufferedItems:number, settings:{minIndex:number, itemHeight:number}}} state
+ * @param {number} scrollTop
+ * @param {()=>void} get
+ * @returns {{data:Date, topPaddingHeight:number,bottomPaddingHeight:number }
+ */
+function recalcVisibleScroll(state, scrollTop, get) {
+  const { totalHeight, toleranceHeight, bufferedItems, settings: { minIndex, itemHeight } } = state
+
+  const calcCurrentIndex = () => {
+    return minIndex + Math.floor((scrollTop - toleranceHeight) / itemHeight)
+  }
+
+  const recalcPaddings = (index, data) => {
+    const topPaddingHeight = Math.max((index - minIndex) * itemHeight, 0)
+    const bottomPaddingHeight = Math.max(totalHeight - topPaddingHeight - data.length * itemHeight, 0)
+    return { topPaddingHeight, bottomPaddingHeight }
+  }
+
+  const index = calcCurrentIndex()
+  const data = get(index, bufferedItems)
+  const { topPaddingHeight, bottomPaddingHeight } = recalcPaddings(index, data)
+
+  return { data, topPaddingHeight, bottomPaddingHeight }
+}
+
 const Scroller = (props) => {
   const [state, setState] = useState(setInitialState(props.settings))
-  const viewportElement = React.createRef()
+  const scrollerElement = React.createRef()
 
   useEffect(() => {
-    viewportElement.current.scrollTop = state.initialPosition
+    scrollerElement.current.scrollTop = state.initialPosition
     if (!state.initialPosition) {
       runScroller({ target: { scrollTop: 0 } })
     }
   }, [])
 
   const runScroller = ({ target: { scrollTop } }) => {
-    const { totalHeight, toleranceHeight, bufferedItems, settings: { minIndex, itemHeight } } = state
-    const index = minIndex + Math.floor((scrollTop - toleranceHeight) / itemHeight)
-    const data = props.get(index, bufferedItems)
-    const topPaddingHeight = Math.max((index - minIndex) * itemHeight, 0)
-    const bottomPaddingHeight = Math.max(totalHeight - topPaddingHeight - data.length * itemHeight, 0)
-
+    const { data, topPaddingHeight, bottomPaddingHeight } = recalcVisibleScroll(state, scrollTop, props.get)
     setState((prevState) => ({
       ...prevState,
       topPaddingHeight,
@@ -53,10 +74,8 @@ const Scroller = (props) => {
   }
 
   const updateDate = () => {
-    const scrollTop = viewportElement.current.scrollTop
-    const { toleranceHeight, bufferedItems, settings: { minIndex, itemHeight } } = state
-    const index = minIndex + Math.floor((scrollTop - toleranceHeight) / itemHeight)
-    const data = props.get(index, bufferedItems)
+    const scrollTop = scrollerElement.current.scrollTop
+    const { data } = recalcVisibleScroll(state, scrollTop, props.get)
     setState((prevState) => ({
       ...prevState,
       data
@@ -66,25 +85,25 @@ const Scroller = (props) => {
   return (
     <div
       className={props.className}
-      ref={viewportElement}
+      ref={scrollerElement}
       onScroll={runScroller}
       onMouseEnter={updateDate}
       style={{ height: state.scrollerHeight }}
     >
       <div style={{ height: state.topPaddingHeight }}></div>
       {
-        state.data.map(props.row)
+        state.data.map(props.templateRow)
       }
       <div style={{ height: state.bottomPaddingHeight }}></div>
     </div>
   )
 }
 
-export default Scroller
-
 Scroller.propTypes = {
   className: string,
-  get: func,
-  settings: object,
-  row: func
+  get: func.isRequired,
+  settings: object.isRequired,
+  templateRow: func
 }
+
+export default Scroller
