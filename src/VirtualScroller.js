@@ -29,10 +29,10 @@ const setInitialState = (settings) => {
 /** Пересчет data, topPaddingHeight, bottomPaddingHeight
  * @param {{totalHeight:number, toleranceHeight:number, bufferedItems:number, settings:{minIndex:number, itemHeight:number}}} state
  * @param {number} scrollTop
- * @param {()=>void} get
+ * @param {()=>void} generateData
  * @returns {{data:Date, topPaddingHeight:number,bottomPaddingHeight:number }
  */
-function recalcVisibleScroll(state, scrollTop, get) {
+function recalcVisibleScroll(state, scrollTop, generateData) {
   const { totalHeight, toleranceHeight, bufferedItems, settings: { minIndex, itemHeight } } = state
 
   const calcCurrentIndex = () => {
@@ -46,13 +46,13 @@ function recalcVisibleScroll(state, scrollTop, get) {
   }
 
   const index = calcCurrentIndex()
-  const data = get(index, bufferedItems)
+  const data = generateData(index, bufferedItems)
   const { topPaddingHeight, bottomPaddingHeight } = recalcPaddings(index, data)
 
   return { data, topPaddingHeight, bottomPaddingHeight }
 }
 
-const Scroller = (props) => {
+export default function Scroller(props) {
   const [state, setState] = useState(setInitialState(props.settings))
   const scrollerElement = React.createRef()
 
@@ -64,7 +64,7 @@ const Scroller = (props) => {
   }, [])
 
   const runScroller = ({ target: { scrollTop } }) => {
-    const { data, topPaddingHeight, bottomPaddingHeight } = recalcVisibleScroll(state, scrollTop, props.get)
+    const { data, topPaddingHeight, bottomPaddingHeight } = recalcVisibleScroll(state, scrollTop, props.generateData)
     setState((prevState) => ({
       ...prevState,
       topPaddingHeight,
@@ -75,7 +75,7 @@ const Scroller = (props) => {
 
   const updateDate = () => {
     const scrollTop = scrollerElement.current.scrollTop
-    const { data } = recalcVisibleScroll(state, scrollTop, props.get)
+    const { data } = recalcVisibleScroll(state, scrollTop, props.generateData)
     setState((prevState) => ({
       ...prevState,
       data
@@ -90,20 +90,16 @@ const Scroller = (props) => {
       onMouseEnter={updateDate}
       style={{ height: state.scrollerHeight }}
     >
-      <div style={{ height: state.topPaddingHeight }}></div>
-      {
-        state.data.map(props.templateRow)
-      }
-      <div style={{ height: state.bottomPaddingHeight }}></div>
+      <div style={{ height: state.topPaddingHeight }}/>
+      { state.data.map(props.templateRow) }
+      <div style={{ height: state.bottomPaddingHeight }}/>
     </div>
   )
 }
 
 Scroller.propTypes = {
-  className: string,
-  get: func.isRequired,
+  className: string.isRequired,
+  generateData: func.isRequired,
   settings: object.isRequired,
-  templateRow: func
+  templateRow: func.isRequired
 }
-
-export default Scroller

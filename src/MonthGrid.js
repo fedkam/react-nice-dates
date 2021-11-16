@@ -3,13 +3,14 @@ import { func, instanceOf, object } from 'prop-types'
 import {
   set, getMonth, format, isDate
 } from 'date-fns'
-import { Month } from './Month'
+import Month from './Month'
 
 /** Генерация массива объектов { nameMonth,onChange }
- * @param {Date} currentMonth - The date
- * @param {function} onMonthChange - The func
+ * @param {Date} currentMonth
+ * @param {function} onDateChange
+ * @param {object} locale
  */
-function generateMountList(currentMonth, onMonthChange, locale) {
+function generateMountList(currentMonth, onDateChange, locale) {
   const monthList = []
   if (isDate(currentMonth)) {
     for (let numberMonth = 0; numberMonth < 12; numberMonth++) {
@@ -18,26 +19,25 @@ function generateMountList(currentMonth, onMonthChange, locale) {
       monthList.push({
         name: nameSetMonth,
         number: numberMonth,
-        onMonthChange: () => onMonthChange(setMonth)
+        onMonthChange: () => onDateChange(setMonth)
       })
     }
     return monthList
   }
 }
 
-export const MonthGrid = ({ locale, month, onMonthChange }) => {
-  const monthList = generateMountList(month, onMonthChange, locale)
-
+function MonthGrid({ locale, date, onDateChange }) {
+  const monthList = generateMountList(date, onDateChange, locale)
   return (
     <div className='nice-dates-navigation-submenu-months-grid'>
-      { monthList && monthList.length && monthList.map((el) => {
-        const isSelectedMonth = getMonth(month) === el.number
+      { monthList && monthList.length && monthList.map((month) => {
+        const isSelectedMonth = getMonth(date) === month.number
         return (
           <Month
-            key={`${el.name}`}
-            name={el.name}
+            key={`${month.name}`}
+            name={month.name}
             isSelectedMonth={isSelectedMonth}
-            onMonthChange={el.onMonthChange}
+            onMonthChange={month.onMonthChange}
           />
         )
       })}
@@ -47,6 +47,8 @@ export const MonthGrid = ({ locale, month, onMonthChange }) => {
 
 MonthGrid.propTypes = {
   locale: object.isRequired,
-  month: instanceOf(Date).isRequired,
-  onMonthChange: func.isRequired
+  date: instanceOf(Date).isRequired,
+  onDateChange: func.isRequired
 }
+
+export default MonthGrid

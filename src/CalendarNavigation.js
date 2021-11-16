@@ -1,38 +1,41 @@
 import React from 'react'
 import { func, instanceOf, object } from 'prop-types'
 import { format, getYear } from 'date-fns'
-import { MonthGrid } from './MonthGrid'
-import { YearList } from './YearList'
+import MonthGrid from './MonthGrid'
+import YearList from './YearList'
 
-const getFormatPattern = (month) => {
+/** @param {Date} date */
+const getFormatPattern = (date) => {
   const startYear = getYear(new Date(0))
-  const selectedYear = getYear(month)
+  const selectedYear = getYear(date)
   if (selectedYear < startYear) return 'LLLL'
   return 'LLLL yyyy'
 }
 
-const CalendarNavigation = ({ locale, month, minimumDate, maximumDate, onMonthChange }) => (
-  <div className='nice-dates-navigation'>
-    <span
-      className='nice-dates-navigation_current'
-    >
-      {format(month, getFormatPattern(month), { locale })}
-    </span>
+function CalendarNavigation({ locale, month, onMonthChange }) {
+  const date = month // костыль: переопределение на более семантически подходящее имя
+  const onDateChange = onMonthChange
+  return (
+    <div className='nice-dates-navigation'>
+      <span
+        className='nice-dates-navigation_current'
+      >
+        {format(date, getFormatPattern(date), { locale })}
+      </span>
 
-    <div className='nice-dates-navigation-submenu'>
-      <MonthGrid
-        locale={locale}
-        month={month}
-        onMonthChange={onMonthChange}/>
-      <YearList
-        month={month}
-        onYearChange={onMonthChange}
-      />
+      <div className='nice-dates-navigation-submenu'>
+        <MonthGrid
+          locale={locale}
+          date={date}
+          onDateChange={onDateChange}/>
+        <YearList
+          date={date}
+          onDateChange={onDateChange}
+        />
+      </div>
     </div>
-  </div>
-)
-
-export default CalendarNavigation
+  )
+}
 
 CalendarNavigation.propTypes = {
   locale: object.isRequired,
@@ -41,3 +44,5 @@ CalendarNavigation.propTypes = {
   maximumDate: instanceOf(Date),
   onMonthChange: func.isRequired
 }
+
+export default CalendarNavigation

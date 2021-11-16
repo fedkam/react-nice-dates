@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { bool, string, func } from 'prop-types'
 
-export const Month = (props) => {
+function Month(props) {
   const { name, onMonthChange, isSelectedMonth } = props
   return (
     <div
@@ -15,7 +15,9 @@ export const Month = (props) => {
 }
 
 Month.propTypes = {
-  name: string,
-  isSelectedMonth: bool,
+  name: string.isRequired,
+  isSelectedMonth: bool.isRequired,
   onMonthChange: func.isRequired
 }
+
+export default Month

@@ -6,16 +6,14 @@ import {
 import { func, instanceOf } from 'prop-types'
 import { Year } from './Year'
 
-export const YearList = (props) => {
-  const { month, onYearChange } = props
-
+function YearList({ date, onDateChange }) {
   const SETTINGS = {
     itemHeight: 24,
     amount: 5,
     tolerance: 2,
     minIndex: getYear(new Date(0)),
-    maxIndex: checkYear(month) + 1000,
-    startIndex: checkYear(month) - 2
+    maxIndex: checkYear(date) + 1000,
+    startIndex: checkYear(date) - 2
   }
 
   /** Проверка даты на < 1970г.
@@ -29,7 +27,7 @@ export const YearList = (props) => {
     return selectedYear
   }
 
-  /** Генерация массива объектов { year, onYearChange }
+  /** Генерация массива объектов { year, onYearChange }[ ]
    * @param {number} offset
    * @param {number} limit
    * @returns {{year:number, onYearChange:()=>void}[]} массив объектов
@@ -44,7 +42,7 @@ export const YearList = (props) => {
         data.push(
           {
             year: i,
-            onYearChange: () => onYearChange(set(month, { year: i }))
+            onYearChange: () => onDateChange(set(date, { year: i }))
           }
         )
       }
@@ -53,7 +51,7 @@ export const YearList = (props) => {
   }
 
   const YearTemplate = (item) => {
-    const isSelectedYear = getYear(month) === item.year
+    const isSelectedYear = getYear(date) === item.year
     return (
       <Year
         key={`${item.year}`}
@@ -67,7 +65,7 @@ export const YearList = (props) => {
   return (
     <VirtualScroller
       className="nice-dates-navigation-submenu-year-list"
-      get={getYearList}
+      generateData={getYearList}
       settings={SETTINGS}
       templateRow={YearTemplate}
     />
@@ -75,6 +73,8 @@ export const YearList = (props) => {
 }
 
 YearList.propTypes = {
-  month: instanceOf(Date).isRequired,
-  onYearChange: func.isRequired
+  date: instanceOf(Date).isRequired,
+  onDateChange: func.isRequired
 }
+
+export default YearList

@@ -307,8 +307,12 @@ $nice-dates-cell-width: calc(100% / 7);
     transition: height 250ms ease-out;
 
     &_current {
-      flex-grow: initial;
-      padding: 16px 0px;
+      flex-grow: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 16px 0px;
+      min-height: 24px;
       user-select: none;
     }
   }
@@ -332,6 +336,7 @@ $nice-dates-cell-width: calc(100% / 7);
       justify-content: space-between;
       align-items: center;
       font-size: $nice-dates-font-size-base;
+      margin-bottom: 24px;
 
       &-months-grid {
         margin-right: 32px;
