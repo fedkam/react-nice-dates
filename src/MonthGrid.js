@@ -5,10 +5,11 @@ import {
 } from 'date-fns'
 import Month from './Month'
 
-/** Генерация массива объектов { nameMonth,onChange }
+/** Generating an array of objects
  * @param {Date} currentMonth
  * @param {function} onDateChange
  * @param {object} locale
+ * @returns {{name:string, number:number, onMonthChange:()=>void}[]}
  */
 function generateMountList(currentMonth, onDateChange, locale) {
   const monthList = []
@@ -22,8 +23,8 @@ function generateMountList(currentMonth, onDateChange, locale) {
         onMonthChange: () => onDateChange(setMonth)
       })
     }
-    return monthList
   }
+  return monthList
 }
 
 function MonthGrid({ locale, date, onDateChange }) {

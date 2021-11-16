@@ -4,7 +4,7 @@ import {
   getYear, set
 } from 'date-fns'
 import { func, instanceOf } from 'prop-types'
-import { Year } from './Year'
+import Year from './Year'
 
 function YearList({ date, onDateChange }) {
   const SETTINGS = {
@@ -16,9 +16,9 @@ function YearList({ date, onDateChange }) {
     startIndex: checkYear(date) - 2
   }
 
-  /** Проверка даты на < 1970г.
+  /** Date check < 1970
    * @param {Date} selectedDate
-   * @returns {number} year
+   * @returns {number} number year
    */
   function checkYear(selectedDate) {
     const startYear = getYear(new Date(0))
@@ -27,10 +27,10 @@ function YearList({ date, onDateChange }) {
     return selectedYear
   }
 
-  /** Генерация массива объектов { year, onYearChange }[ ]
+  /** Generating an array of objects
    * @param {number} offset
    * @param {number} limit
-   * @returns {{year:number, onYearChange:()=>void}[]} массив объектов
+   * @returns {{year:number, onYearChange:()=>void}[]}
    */
   function getYearList(offset, limit) {
     const data = []

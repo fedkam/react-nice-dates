@@ -13,7 +13,7 @@ const getFormatPattern = (date) => {
 }
 
 function CalendarNavigation({ locale, month, onMonthChange }) {
-  const date = month // костыль: переопределение на более семантически подходящее имя
+  const date = month // semantically appropriate name
   const onDateChange = onMonthChange
   return (
     <div className='nice-dates-navigation'>

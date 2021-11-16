@@ -296,7 +296,7 @@ $nice-dates-cell-width: calc(100% / 7);
   }
 }
 
-//новые utils
+//new utils
 @mixin get-select-template() {
   & > * {
     z-index: 2;
@@ -366,7 +366,7 @@ $nice-dates-cell-width: calc(100% / 7);
   scrollbar-width: none; // firefox
 }
 
-// переопределенные
+// redefined
 .nice-dates {
   &-navigation {
     flex-direction: column;
@@ -391,7 +391,7 @@ $nice-dates-cell-width: calc(100% / 7);
   }
 }
 
-// новые
+// new
 .nice-dates {
   &-navigation {
     &:hover {

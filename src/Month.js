@@ -2,8 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { bool, string, func } from 'prop-types'
 
-function Month(props) {
-  const { name, onMonthChange, isSelectedMonth } = props
+function Month({ name, onMonthChange, isSelectedMonth }) {
   return (
     <div
       className={classNames('nice-dates-navigation-submenu-months-grid-month', { '-selected': isSelectedMonth })}
