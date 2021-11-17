@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ru } from 'date-fns/locale'
+import { enGB } from 'date-fns/locale'
 import { DatePicker } from '../../src'
 import Example from './Example'
 
@@ -30,7 +30,7 @@ export default function DatePickerExample() {
 
   return (
     <Example code={code}>
-      <DatePicker date={date} onDateChange={setDate} locale={ru}>
+      <DatePicker date={date} onDateChange={setDate} locale={enGB}>
         {({ inputProps, focused }) => <input className={'input' + (focused ? ' -focused' : '')} {...inputProps} />}
       </DatePicker>
     </Example>
