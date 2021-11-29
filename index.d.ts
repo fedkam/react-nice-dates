@@ -1,4 +1,4 @@
-declare module "react-nice-dates" {
+declare module "react-cool-dates" {
   import * as React from "react";
   import * as Locale from "date-fns";
 

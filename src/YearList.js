@@ -11,7 +11,7 @@ function YearList({ date, onDateChange }) {
     itemHeight: 24,
     amount: 5,
     tolerance: 2,
-    minIndex: getYear(new Date(0)),
+    minIndex: getYear(new Date(1700,01,01)),
     maxIndex: checkYear(date) + 1000,
     startIndex: checkYear(date) - 2
   }
