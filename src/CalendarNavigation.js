@@ -6,7 +6,7 @@ import YearList from './YearList'
 
 /** @param {Date} date */
 const getFormatPattern = (date) => {
-  const startYear = getYear(new Date(0))
+  const startYear = getYear(new Date(1700, 1, 1))
   const selectedYear = getYear(date)
   if (selectedYear < startYear) return 'LLLL'
   return 'LLLL yyyy'

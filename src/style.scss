@@ -389,6 +389,12 @@ $nice-dates-cell-width: calc(100% / 7);
   &-week-header {
     box-shadow: none;
   }
+  &-day {
+    &.-today {
+      font-weight: 400;
+      font-size: 18px;
+    }
+  }
 }
 
 // new
