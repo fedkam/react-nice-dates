@@ -1,6 +1,6 @@
 {
   "name": "react-cool-dates",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "build/index.js",
   "module": "build/index.esm.js",
   "unpkg": "build/index.umd.js",
@@ -26,7 +26,7 @@
     "build:website": "rm -rf build-website/* && parcel build website/index.html -d build-website --experimental-scope-hoisting --no-content-hash && cp website/CNAME build-website/CNAME",
     "deploy": "gh-pages -d build-website",
     "lint": "eslint --cache --format codeframe src test website",
-    "release": "yarn run build && npm publish",
+    "release": "yarn run build",
     "test": "jest",
     "test:watch": "jest --watch"
   },
